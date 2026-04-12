@@ -1,10 +1,14 @@
-# Advent of Code 2024 - Rust Learning
+# Advent of Code - Rust Workspace
 
-Learning Rust through AoC 2024 challenges!
+Learning Rust through Advent of Code challenges.
+
+This repository is intended to stay reusable across Advent of Code years.
+Each year lives in its own directory, and day crates use short year-scoped
+package names to avoid workspace collisions.
 
 ## Structure
 
-- `day01/`, `day02/`, etc. - Individual day solutions
+- `2024/day01/`, `2024/day02/`, etc. - Individual day solutions grouped by year
 - `shared/` - Common utilities for input parsing
 - Each day is a separate Rust package in the workspace
 
@@ -12,13 +16,13 @@ Learning Rust through AoC 2024 challenges!
 
 ```bash
 # Run solution
-cargo run -p dayXX
+cargo run -p y<year>-dXX
 
 # Run tests
-cargo test -p dayXX
+cargo test -p y<year>-dXX
 
 # Run benchmarks
-cargo bench -p dayXX
+cargo bench -p y<year>-dXX
 ```
 
 ## Current Status
@@ -49,23 +53,23 @@ cargo bench -p dayXX
 
 ## Adding New Days
 
-1. Create `dayXX/` directory
-2. Add problem description as `dayXX/description.txt`
-3. Add input file as `dayXX/input.txt`
-4. Copy `day01/Cargo.toml` and update the name
-5. Create `dayXX/src/lib.rs` with core logic and EXAMPLE_INPUT constant
-6. Create `dayXX/src/main.rs` with simple runner using lib functions
-7. Create `dayXX/tests/dayXX.rs` with comprehensive tests (example + real input)
-8. optionally add `dayXX/benches/bench.rs` for performance benchmarks
+1. Create `<year>/dayXX/`
+2. Add problem description as `<year>/dayXX/description.txt`
+3. Add input file as `<year>/dayXX/input.txt`
+4. Copy an existing `<year>/dayXX/Cargo.toml` and update the package name to `y<year>-dXX`
+5. Create `<year>/dayXX/src/lib.rs` with core logic and `EXAMPLE_INPUT`
+6. Create `<year>/dayXX/src/main.rs` with a simple runner using lib functions
+7. Create `<year>/dayXX/tests/dayXX.rs` with comprehensive tests
+8. Optionally add `<year>/dayXX/benches/bench.rs` for performance benchmarks
 
 ## Performance Analysis
 
 Some days include performance benchmarks comparing different algorithmic approaches:
 
-- **Day 1**: Run `cargo bench -p day01` to generate `performance_comparison.svg`
+- **Day 1**: Run `cargo bench -p y2024-d01` to generate `performance_comparison.svg`
 - Shows performance scaling between optimized hashmap approach vs naive nested loops
 - Demonstrates clear O(n) vs O(n²) performance differences with speedup factors
-- **Day 2**: Run `cargo bench -p day02` for micro-benchmarks
+- **Day 2**: Run `cargo bench -p y2024-d02` for micro-benchmarks
 - Compares different safety checking approaches and Problem Dampener implementations
 
 ## Setup Notes
@@ -117,7 +121,7 @@ python3 pre-commit-4.2.0.pyz run --all-files
 ```bash
 
 # Generate and open documentation in browser
-cargo doc --no-deps --open -p dayXX
+cargo doc --no-deps --open -p y<year>-dXX
 
 # Generate documentation for all packages
 cargo doc --no-deps
@@ -134,5 +138,5 @@ sudo chown -R $USER:$USER target/
 # Install wslu and use wslview
 sudo apt install wslu
 cargo doc --no-deps
-wslview target/doc/dayXX/index.html
+wslview target/doc/y<year>_dXX/index.html
 ```

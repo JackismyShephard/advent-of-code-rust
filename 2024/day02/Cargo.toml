@@ -1,0 +1,13 @@
+[package]
+name = "y2024-d02"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+shared = { path = "../../shared" }
+anyhow = { workspace = true }
+itertools = { workspace = true }
+
+[dev-dependencies]
+rstest = { workspace = true }
+criterion = { workspace = true }

@@ -170,61 +170,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "460fbee9c2c2f33933d720630a6a0bac33ba7053db5344fac858d4b8952d77d5"
 
 [[package]]
-name = "day01"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "criterion",
- "itertools 0.14.0",
- "rstest",
- "rustc-hash",
- "shared",
-]
-
-[[package]]
-name = "day02"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "criterion",
- "itertools 0.14.0",
- "rstest",
- "shared",
-]
-
-[[package]]
-name = "day03"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "itertools 0.14.0",
- "regex",
- "rstest",
-]
-
-[[package]]
-name = "day04"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "itertools 0.14.0",
- "rstest",
- "shared",
-]
-
-[[package]]
-name = "day05"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "criterion",
- "itertools 0.14.0",
- "rstest",
- "rustc-hash",
- "shared",
-]
-
-[[package]]
 name = "either"
 version = "1.15.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -842,4 +787,60 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "74c7b26e3480b707944fc872477815d29a8e429d2f93a1ce000f5fa84a15cbcd"
 dependencies = [
  "memchr",
+]
+
+[[package]]
+name = "y2024-d01"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "criterion",
+ "itertools 0.14.0",
+ "rstest",
+ "rustc-hash",
+ "shared",
+]
+
+[[package]]
+name = "y2024-d02"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "criterion",
+ "itertools 0.14.0",
+ "rstest",
+ "shared",
+]
+
+[[package]]
+name = "y2024-d03"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "itertools 0.14.0",
+ "regex",
+ "rstest",
+ "shared",
+]
+
+[[package]]
+name = "y2024-d04"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "itertools 0.14.0",
+ "rstest",
+ "shared",
+]
+
+[[package]]
+name = "y2024-d05"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "criterion",
+ "itertools 0.14.0",
+ "rstest",
+ "rustc-hash",
+ "shared",
 ]

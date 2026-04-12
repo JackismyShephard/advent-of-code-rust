@@ -1,0 +1,18 @@
+[package]
+name = "y2024-d05"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+shared = { path = "../../shared" }
+anyhow = { workspace = true }
+itertools = { workspace = true }
+rustc-hash = { workspace = true }
+
+[dev-dependencies]
+criterion = { workspace = true }
+rstest = { workspace = true }
+
+[[bench]]
+name = "algorithmic_scaling"
+harness = false
