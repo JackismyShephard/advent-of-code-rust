@@ -53,6 +53,18 @@ cargo bench -p y<year>-dXX
 
 ## Adding New Days
 
+Use the scaffold script from the repository root:
+
+```bash
+scripts/new_day.sh 2025 2
+scripts/new_day.sh 2025 2 --dry-run
+```
+
+This creates `2025/day02/` with `Cargo.toml`, `description.txt`, `input.txt`,
+`src/lib.rs`, `src/main.rs`, and `tests/day02.rs`.
+
+Manual setup remains:
+
 1. Create `<year>/dayXX/`
 2. Add problem description as `<year>/dayXX/description.txt`
 3. Add input file as `<year>/dayXX/input.txt`
