@@ -71,7 +71,6 @@ files=(
     "${crate_dir}/input.txt"
     "${crate_dir}/src/lib.rs"
     "${crate_dir}/src/main.rs"
-    "${crate_dir}/tests/day${day_padded}.rs"
 )
 
 if [[ -e "$crate_dir" ]]; then
@@ -87,7 +86,7 @@ if "$dry_run"; then
     exit 0
 fi
 
-mkdir -p "${crate_dir}/src" "${crate_dir}/tests"
+mkdir -p "${crate_dir}/src"
 
 cat > "${crate_dir}/Cargo.toml" <<EOF
 [package]
@@ -194,28 +193,9 @@ fn main() -> Result<()> {
 }
 EOF
 
-cat > "${crate_dir}/tests/day${day_padded}.rs" <<EOF
-use ${lib_name}::{solve_part1, solve_part2, EXAMPLE_INPUT};
-
-// ===== SOLVE FUNCTION TESTS =====
-
-#[test]
-fn test_solve_part1_reports_unimplemented() {
-    let error = solve_part1(EXAMPLE_INPUT).unwrap_err();
-    assert_eq!(error.to_string(), "Part 1 not implemented yet");
-}
-
-#[test]
-fn test_solve_part2_reports_unimplemented() {
-    let error = solve_part2(EXAMPLE_INPUT).unwrap_err();
-    assert_eq!(error.to_string(), "Part 2 not implemented yet");
-}
-EOF
-
 echo "Created ${crate_dir}"
 echo "Package: ${package_name}"
 echo "Next steps:"
 echo "  1. Paste the puzzle text into ${crate_dir}/description.txt"
 echo "  2. Paste your puzzle input into ${crate_dir}/input.txt"
 echo "  3. Implement ${crate_dir}/src/lib.rs"
-echo "  4. Replace the placeholder tests in ${crate_dir}/tests/day${day_padded}.rs"
