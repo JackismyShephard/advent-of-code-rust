@@ -860,6 +860,7 @@ name = "y2025-d02"
 version = "0.1.0"
 dependencies = [
  "anyhow",
+ "itertools 0.14.0",
  "rstest",
  "shared",
 ]

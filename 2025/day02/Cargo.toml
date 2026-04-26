@@ -6,6 +6,7 @@ edition.workspace = true
 [dependencies]
 shared = { path = "../../shared" }
 anyhow = { workspace = true }
+itertools = { workspace = true }
 
 [dev-dependencies]
 rstest = { workspace = true }
