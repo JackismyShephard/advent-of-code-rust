@@ -68,6 +68,8 @@ Focused configuration for learning Rust without information overload:
 
   - User instructions prefixed with "remember" should be documented here
   - This creates a persistent record of important project-specific guidance
+  - For repeated-digit / ID-style problems, assume leading zeroes are not
+    allowed unless the user explicitly says otherwise
 
 - **ALWAYS run commands from the project root directory**
 
