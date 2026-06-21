@@ -119,3 +119,289 @@ hence the number of prime divisors of N is $k \le log_2(D)$.
 It follows that the full runtime must be $O(log(D))$ excluding the factorization itself. We already know the factorization is $O(\sqrt(D))$ so it follows that the full runtime including facorization is $O(\sqrt(D))$. We know that the full number of digits D is floor(log10(N)) + 1 so we can also characterize the runtime as
 
 $O(\sqrt(\log(N)))$
+
+### The Optimal solution
+
+So I ended up asking codex whether my solution was optimal and it turns out it is far from it. While my solution efficiently determines whether a single number consists of 2 or more repeated segments, it does not scale very well when considering the full input for this problem. Recall that the full input is a set of ranges where each range implicitly defines a sequence of numbers, each of which my solution processes in $O(\sqrt(\log(N)))$ time. The problem is that each such sequence potentially contains many numbers. Even a fast per-number check becomes expensive if we apply it to every number in every range.
+
+It turns out that we do not actually need to process each number in a range individually. In particular, codex was able to find another solution to this problem online which inverts the problem: Instead of iterating over every number and asking whether it is repeated, it directly characterizes the repeated numbers that can occur inside each range and sum them in groups. The full method is a bit complicated but high-level it can be described as follows:
+
+1. For a given range `R`, iterate through each digit length `D` for which `R` contains at least one `D`-digit number.
+2. For each `D`, iterate over each segment length `n`, where `n` is a proper divisor of `D` and `n` is not `D` itself.
+3. For each `(D, n)`, compute the multiplier that repeats an `S`-digit segment enough times to form a `D`-digit number.
+4. Use the multiplier to find the lowest and highest `n`-digit segments whose repeated forms fall inside the `D`-digit subrange of `R`; together, these two bounds define the interval of valid segments for the current `(D, S)`.
+5. Sum all numbers formed by repeating the segments in this interval using the formula for an arithmetic series, instead of generating and summing each number individually.
+6. For each digit length `D`, correct the sum contributed by each segment length `S` using a bottom-up DP approach, so that numbers already accounted for by shorter segment lengths are excluded.
+
+Now let's go through each step in more detail.
+
+## 1. Iterating though all valid digit lengths D for R
+
+The range `R` is defined by a `(start, end)` tuple where `end` >= `start`. We can get the number of digits of each using the same log10 based approach described before. In particular we can derive:
+
+D_start = floor(log10(start)) + 1 and D_end = floor(log10(end)) + 1
+
+so we know to iterate from D_start to D_end to get all valid digits lengths for R.
+
+## 2. Iterating through all segment lengths `n` that are divisors of `D`
+
+For `n` to be a divisor of D we must have `D mod n == 0`. Furthermore, we cannot have `n` equal to `D` as that would result in a number `N` with no repeated segments. Hence, we can restrict ourselves to lengths `n` in the range `1` to floor(`D/2`), as the only divisor of `D` greater than `D/2` is `D` itself.
+
+## 3. Computing the multiplier that repeats a segment into a `D`-length number
+
+We now have a `(D, n)` pair. What we want to do conceptually is generate each possible segment of digits `m` of length `n` and then repeat it `r = D/n` times. Each resulting number `N` must then necessarily satisfy the conditition that it consists of `m` repeated 2 or more times.
+
+We already know how to repeat `m` a certain number of times from our previous solution. In particular we know that we can repeat `m` a total of `r` times using the formula:
+
+\[
+m \cdot \sum_{k=0}^{r-1} 10^{kn} = m\cdot \frac{1-{10^n}^r}{1 - 10^n}
+\]
+
+So the multiplier that repeats `m` a total of `r` times is  $ M = \frac{1-{10^n}^r}{1 - 10^n}$ which we can compute in constant time
+
+## Finding the Interval of `n`-Digit Segments That Repeat Into a `D`-Digit Number in `R`
+
+We now have `start`, `end`, `D`, `n`, and `M`. What we would like to find next is the interval of all `n`-digit segments `m` which, when multiplied by `M`, gives us a number `N` in `R`.
+
+For `N = m \cdot M` to be in the inclusive range `R = [start, end]`, we need:
+
+\[
+start \le M \cdot m \le end
+\]
+
+Next note that  $M  = \sum_{k=0}^{r-1} 10^{kn} > 0$ because we require r >=2 repeated segments each of which must be non-empty . Hence we can divide by `M` without changing the direction of the inequalities:
+
+\[
+\left\lceil \frac{start}{M} \right\rceil
+\le m \le
+\left\lfloor \frac{end}{M} \right\rfloor
+\]
+
+The ceiling is required on the left and the floor is required on the right because `M` may not divide `start` or `end` exactly. For example, if `start = 5`, `end = 10`, and `M = 3`, then:
+
+\[
+\frac{start}{M} = \frac{5}{3} = 1.66...
+\]
+
+and
+
+\[
+\frac{end}{M} = \frac{10}{3} = 3.33...
+\]
+
+Hence, the valid integer values of `m` must satisfy:
+
+\[
+2 \le m \le 3
+\]
+
+The `m` values in the range defined above satisfy that `N = m * M` lies in
+the range `R`, which is a necessary but not sufficient condition. In particular,
+each `m` must also contain exactly `n` digits in order for `N = m * M` to be a
+number with `r` repeated segments of size `n`.
+
+While we derived `M` from `n` and `r = D / n`, this does not force every `m` in
+the range above to have `n` digits. It only ensures that copies of `m` are
+placed `n` digits apart. For example, if `n = 2` and `r = 2`, then:
+
+\[
+M = 10^2 + 1 = 101
+\]
+
+Now suppose the range `R` is broad enough to contain `707`, for example
+`R = [1, 9999]`. The range-derived inequality gives:
+
+\[
+\left\lceil \frac{1}{101} \right\rceil \le m \le
+\left\lfloor \frac{9999}{101} \right\rfloor
+\]
+
+so:
+
+\[
+1 \le m \le 99
+\]
+
+Therefore, `m = 7` satisfies the range-derived constraint, and:
+
+\[
+7 \cdot 101 = 707
+\]
+
+But `7` is not a 2-digit segment. Conceptually this corresponds to repeating
+`07` twice, giving `0707`, but as an integer the leading zero disappears and we
+get `707`. Hence, the multiplier alone does not guarantee that `m` has length
+`n`.
+¨
+It follows that we must restrict the range further to only include those $m$ which have $n$ digits. Note first that in order for $m$ to have $n$ digits it must be true that
+
+$ 10^(n-1) <= m <= 10^(n) -1 $
+
+therefore the lower bound of the correct range for m must be
+
+m_start = max(\left\lceil \frac{start}{M} \right\rceil, 10^(n-1))
+
+while the upper bound of th correct range for m must be
+
+m_end = min(\left\lfloor \frac{end}{M} \right\rfloor, 10^(n) - 1)
+
+## 5. Summing All Numbers Formed by Repeating the Segments in the Given Interval
+
+Now we have a range of numbers `m` which, when multiplied with `M`, gives us
+those numbers `N` that are in the range `R` and are made up of `r` repeated
+segments of size `n`. What we want to compute now is the sum of these `N`.
+
+The crucial detail is that we do not need to compute and sum each `N`
+iteratively. Let us start by defining the sum mathematically as:
+
+\[
+\sum_{m=m_{start}}^{m_{end}} M \cdot m
+\]
+
+Since `M` is constant, we can move it outside the sum:
+
+\[
+M \cdot \sum_{m=m_{start}}^{m_{end}} m
+\]
+
+The values of `m` form a finite sequence where the difference between
+consecutive values is exactly `1`. In other words, we are dealing with a finite
+arithmetic progression whose sum has a closed-form solution:
+
+\[
+S_m = \frac{\text{count}_m}{2} \cdot (m_{start} + m_{end})
+\]
+
+where:
+
+\[
+\text{count}_m = m_{end} - m_{start} + 1
+\]
+
+Hence, we can express the full sum of all `N` as:
+
+\[
+M \cdot \frac{(m_{end} - m_{start} + 1)(m_{start} + m_{end})}{2}
+\]
+
+## 6. Correct the computed sum for each given number size D and segment size n
+
+At this point, for each possible combination of total digit length `D` and
+segment size `n`, we have computed the sum of all numbers `N` of length `D`
+that can be formed by repeating a segment of size `n`.
+
+One might therefore assume that we can simply add all of these sums together to
+get the full sum of all numbers in the given range that consist of two or more
+equal segments. However, this is not correct. The reason is that, for a fixed
+`D`, the same number `N` can sometimes be formed using more than one segment
+size `n`. Hence, for that `D`, the sums for two different values of `n` may
+include the same number `N`. When summing these local sums together, we need to
+account for this overlap.
+
+We can do so using a bottom up dynamic programming approach. In order to derive the bottom up approach let us first state the underlying problem more clearly:
+
+For a fixed total digit length `D` and a given segment length `n`, we can
+generate a set of numbers `{N}` by repeating the corresponding set of
+`n`-digit segments `{m}`. Assume we also have another segment length `n'`,
+which generates a set of numbers `{N'}` by repeating the corresponding set of
+`n'`-digit segments `{m'}`.
+
+If `n'` divides `n` perfectly, then every number in `{N'}` is also in `{N}`.
+For example, if `D = 4` and `n' = 1`, then we can choose `m' = 1`. By
+concatenating it 4 times, we get:
+
+\[
+N' = 1111
+\]
+
+If we instead choose `n = 2`, then we can choose `m = 11`. By concatenating it
+2 times, we get:
+
+\[
+N = N' = 1111
+\]
+
+Another example: let `D = 8`. If `n' = 2`, we can choose `m' = 12`. By
+concatenating it 4 times, we get:
+
+\[
+N' = 12121212
+\]
+
+If we instead choose `n = 4`, then we can choose `m = 1212`. By concatenating
+it 2 times, we get:
+
+\[
+N = N' = 12121212
+\]
+
+Hence, in order to correct the sum for n, what we really want to do is subtract the (corrected) sum for any n' < n where n mod n' = 0. This removes the part of the sum for n which comes from numbers already accounted for by shorter segment lengths. Mathematically speaking, we can define the corrected sum for n via the following recurrence:
+
+\[
+exact_n = sum_n - \sum_{\substack{i < n \\ n \bmod i = 0}} exact_i
+\]
+
+Since we are already iterating through segment sizes `n` starting at `1`,
+solving the above recurrence using a bottom-up approach is easy: after
+computing `sum_n`, we iterate through all `i` with `1 <= i < n`, and for each
+`i` satisfying `n mod i == 0`, we subtract `exact_i`.
+
+The downside is that this adds another inner loop. If `N` is the largest
+segment length considered for the current digit length `D`, then the naive
+bottom-up correction takes `O(N^2)` time for that `D`. We can reduce this to
+`O(N log N)` by using a slightly different approach.
+
+For a given digit length `D`, we maintain a `to_subtract` array of size
+`floor(D / 2)`, where `to_subtract[i]` stores the total amount that must be
+subtracted from `sum_i`. Initially, all entries are set to `0`.
+
+Then, for each segment size `i`, we compute:
+
+\[
+exact_i = sum_i - to\_subtract_i
+\]
+
+This `exact_i` will need to be subtracted from every later segment size `j`
+where `j > i` and `j mod i = 0`. Therefore, we iterate through all multiples
+of `i`, namely `2i, 3i, 4i, ...`, up to the largest segment size
+`floor(D / 2)`, and add `exact_i` to their pending correction:
+
+\[
+to\_subtract_k \mathrel{+}= exact_i
+\]
+
+Note that the innermost loop iterates through all multiples `i * k`, starting
+with `k = 2`, up to `N = floor(D / 2)`. In other words, each iteration
+increases the current value by `i`. It follows that for a given segment length
+`i`, the total runtime is `O(N / i)`.
+
+Over all segment lengths, we get:
+
+\[
+O(N/1) + O(N/2) + \cdots + O(N/N)
+\]
+
+This is a classical sieve-like complexity pattern, which appears when an
+algorithm iterates over multiples or divisors. We can rewrite it as:
+
+\[
+O\left(N \cdot \left(1 + \frac{1}{2} + \cdots + \frac{1}{N}\right)\right)
+\]
+
+The expression in parentheses is the `N`th harmonic number `H_N`, and it grows
+as:
+
+\[
+H_N = \ln(N) + \gamma + o(1)
+\]
+
+where `\gamma` is the Euler-Mascheroni constant. Hence:
+
+\[
+O(N/1) + O(N/2) + \cdots + O(N/N) = O(N \log N)
+\]
+
+Once we have corrected the contribution for each segment size `n`, we can add
+the corrected contributions together to get one sum for the current digit length
+`D`. This `D`-specific sum is then added to a single running accumulator shared
+across all ranges.
