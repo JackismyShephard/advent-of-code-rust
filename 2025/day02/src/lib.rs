@@ -2,7 +2,7 @@
 //!
 //! Solution scaffold for Advent of Code 2025 2.
 
-use anyhow::{bail, Context, Result};
+use anyhow::{Context, Result, bail};
 use itertools::Itertools;
 
 /// Example input from the problem statement used for testing and

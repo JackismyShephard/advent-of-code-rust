@@ -1,7 +1,7 @@
 use rstest::rstest;
 use y2024_d03::{
-    extract_enabled_mul_instructions, extract_mul_instructions, solve_part1, solve_part2,
-    EXAMPLE_INPUT, EXAMPLE_INPUT_PART2,
+    EXAMPLE_INPUT, EXAMPLE_INPUT_PART2, extract_enabled_mul_instructions, extract_mul_instructions,
+    solve_part1, solve_part2,
 };
 
 // ===== CORE FUNCTION TESTS =====

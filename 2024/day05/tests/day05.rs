@@ -1,7 +1,7 @@
 use rstest::rstest;
 use y2024_d05::{
-    get_middle_page, is_valid_sequence, is_valid_sequence_naive, parse_input, solve_part1,
-    solve_part1_naive, EXAMPLE_INPUT,
+    EXAMPLE_INPUT, get_middle_page, is_valid_sequence, is_valid_sequence_naive, parse_input,
+    solve_part1, solve_part1_naive,
 };
 
 // Type alias for validator function to avoid clippy complexity warnings

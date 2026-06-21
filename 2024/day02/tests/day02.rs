@@ -1,6 +1,6 @@
 use rstest::rstest;
 use y2024_d02::{
-    is_safe, is_safe_with_dampener, parse_input, solve_part1, solve_part2, EXAMPLE_INPUT,
+    EXAMPLE_INPUT, is_safe, is_safe_with_dampener, parse_input, solve_part1, solve_part2,
 };
 
 // ===== PARSE INPUT TESTS =====

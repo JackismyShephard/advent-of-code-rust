@@ -1,5 +1,5 @@
 use anyhow::Result;
-use y2024_d04::{solve_part1, solve_part2, EXAMPLE_INPUT};
+use y2024_d04::{EXAMPLE_INPUT, solve_part1, solve_part2};
 
 fn main() -> Result<()> {
     println!("=== Day 4: Ceres Search ===");

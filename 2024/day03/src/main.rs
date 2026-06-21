@@ -1,4 +1,4 @@
-use y2024_d03::{solve_part1, solve_part2, EXAMPLE_INPUT, EXAMPLE_INPUT_PART2};
+use y2024_d03::{EXAMPLE_INPUT, EXAMPLE_INPUT_PART2, solve_part1, solve_part2};
 
 fn main() -> anyhow::Result<()> {
     println!("=== Day 3: Mull It Over ===");

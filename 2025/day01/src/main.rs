@@ -1,7 +1,7 @@
 use anyhow::Result;
 use y2025_d01::{
-    solve_part1, solve_part2, solve_part2_unwrapped_intervals, solve_part2_wrapped_intervals,
-    EXAMPLE_INPUT,
+    EXAMPLE_INPUT, solve_part1, solve_part2, solve_part2_unwrapped_intervals,
+    solve_part2_wrapped_intervals,
 };
 
 fn main() -> Result<()> {

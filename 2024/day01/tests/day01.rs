@@ -1,5 +1,5 @@
 use rstest::rstest;
-use y2024_d01::{parse_input, solve_part1, solve_part2, solve_part2_naive, EXAMPLE_INPUT};
+use y2024_d01::{EXAMPLE_INPUT, parse_input, solve_part1, solve_part2, solve_part2_naive};
 
 // ===== PARSE INPUT TESTS =====
 

@@ -1,7 +1,7 @@
-use criterion::{criterion_group, criterion_main, Criterion};
+use criterion::{Criterion, criterion_group, criterion_main};
 use shared::benchmarking::{
-    create_criterion_benchmark, process_benchmark_results, run_dual_algorithm_benchmark, Algorithm,
-    PlotConfig, TestConfig,
+    Algorithm, PlotConfig, TestConfig, create_criterion_benchmark, process_benchmark_results,
+    run_dual_algorithm_benchmark,
 };
 use y2024_d01::{solve_part2, solve_part2_naive};
 

@@ -1,5 +1,5 @@
 use anyhow::Result;
-use y2024_d05::{solve_part1, EXAMPLE_INPUT};
+use y2024_d05::{EXAMPLE_INPUT, solve_part1};
 
 fn main() -> Result<()> {
     println!("=== Day 5: Print Queue ===");

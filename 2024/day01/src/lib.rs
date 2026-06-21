@@ -8,7 +8,7 @@
 //! Part 2: Calculate similarity score by multiplying each number in the left
 //! list by how many times it appears in the right list, then summing.
 
-use anyhow::{bail, Result};
+use anyhow::{Result, bail};
 use itertools::Itertools;
 use rustc_hash::FxHashMap;
 

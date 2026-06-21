@@ -3,7 +3,7 @@
 //! This module provides simple plotting functionality for creating
 //! performance comparison charts across different days of Advent of Code.
 
-use anyhow::{bail, Context, Result};
+use anyhow::{Context, Result, bail};
 use itertools::Itertools;
 use plotters::coord::types::RangedCoordf64;
 use plotters::prelude::*;
