@@ -882,3 +882,12 @@ dependencies = [
  "rstest",
  "shared",
 ]
+
+[[package]]
+name = "y2025-d05"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "rstest",
+ "shared",
+]
